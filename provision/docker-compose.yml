@@ -1,0 +1,12 @@
+version: '2'
+services:
+  rstudio:
+    depends_on:
+    - r
+    build: ./rstudio
+    image: rstudio-from-geospatial:3.5.2
+    ports:
+    - "80:8787"
+    environment:
+    - PASSWORD=rstudio-
+    restart: always
