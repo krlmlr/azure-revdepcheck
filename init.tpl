@@ -14,3 +14,6 @@ packages:
 - docker-ce
 - docker-compose
 - screen
+
+runcmd:
+- [ adduser, ${user}, docker ]

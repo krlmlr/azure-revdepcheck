@@ -2,6 +2,7 @@ data "template_file" "init" {
   template = "${file("init.tpl")}"
 
   vars {
+    user = "${var.adminuser}"
     ubuntu = "bionic"
   }
 }
