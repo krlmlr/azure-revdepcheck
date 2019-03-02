@@ -148,13 +148,14 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
     storage_image_reference {
         publisher = "Canonical"
         offer     = "UbuntuServer"
-        sku       = "16.04.0-LTS"
+        sku       = "18.04-LTS"
         version   = "latest"
     }
 
     os_profile {
         computer_name  = "revdepcheckvm"
         admin_username = "${var.adminuser}"
+        custom_data = "${data.template_cloudinit_config.config.rendered}"
     }
 
     os_profile_linux_config {
