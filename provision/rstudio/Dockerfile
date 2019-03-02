@@ -30,3 +30,7 @@ RUN \
   tlmgr update --self && \
   tlmgr install sectsty && \
   tlmgr update --all
+
+RUN nice R -q -e 'remotes::install_github(readLines("/github-pkg.txt"))'
+
+RUN su rstudio git clone https://github.com/r-lib/revdepcheck /home/rstudio/revdepcheck
