@@ -12,6 +12,9 @@ variable "client_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
 variable "ssh_key_data" {}
+variable "adminuser" {
+    default = "ubuntu"
+}
 
 provider "random" {
     version = "~> 2.0"
@@ -148,13 +151,13 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
 
     os_profile {
         computer_name  = "myvm"
-        admin_username = "azureuser"
+        admin_username = "${var.adminuser}"
     }
 
     os_profile_linux_config {
         disable_password_authentication = true
         ssh_keys {
-            path     = "/home/azureuser/.ssh/authorized_keys"
+            path     = "/home/${var.adminuser}/.ssh/authorized_keys"
             key_data = "${var.ssh_key_data}"
         }
     }
@@ -170,5 +173,5 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
 }
 
 output "ssh" {
-  value = "${formatlist("ssh -o StrictHostKeyChecking=false ubuntu@%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
+  value = "${formatlist("ssh -o StrictHostKeyChecking=false ${var.adminuser}@%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
 }

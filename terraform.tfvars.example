@@ -12,3 +12,6 @@ tenant_id = "b63194f2-7a02-4cf4-99a2-daaeb5ba7947"
 
 # contents of ~/.ssh/id_rsa.pub
 ssh_key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8xYbelROJXNFhrl87he3RgHzEmSquw6C10i3f4I2ktu024vmM2Hl6VdfRl2/NaJInlmWLpDZ9scyL+94tRt5Q+e0K/kmnw6bql3xZiKN9OCeAUCZaBsAfJniqzwMj+0+pGQI4vtUEfXv/o7CfnaMI4QSe9Jqx4zXdouTwvY6kwWB4K7RFpxpomFJVAO/lt6tfd9ORWavxVuE7bRB0/bln+lHWmzr72OggVKcHbUIwhM6JWFv8S5GwwfBK3TvsDTvCwKryzEG08xtluPL/CjxAPVMXSZsQV+gNXABJQxVKYZmQ6gP88obVLFjYLHz1CyQg0D41MgXiR/Y8USKd+xcJ kirill@tp"
+
+# can't be taken from $HOME, see https://github.com/hashicorp/terraform/issues/62
+# adminuser = "kirill"
