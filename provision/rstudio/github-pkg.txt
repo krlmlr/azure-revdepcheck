@@ -1,1 +1,1 @@
-r-lib/revdepcheck"
+r-lib/revdepcheck
