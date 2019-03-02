@@ -187,5 +187,5 @@ output "ssh" {
 }
 
 output "http" {
-  value = "${formatlist("http://localhost:8080", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
+  value = "http://localhost:8080"
 }
