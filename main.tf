@@ -18,7 +18,7 @@ provider "random" {
 }
 
 # Create a resource group if it doesn’t exist
-resource "azurerm_resource_group" "myterraformgroup" {
+resource "azurerm_resource_group" "revdepcheckgroup" {
     name     = "myResourceGroup"
     location = "eastus"
 
@@ -28,11 +28,11 @@ resource "azurerm_resource_group" "myterraformgroup" {
 }
 
 # Create virtual network
-resource "azurerm_virtual_network" "myterraformnetwork" {
+resource "azurerm_virtual_network" "revdepchecknetwork" {
     name                = "myVnet"
     address_space       = ["10.0.0.0/16"]
     location            = "eastus"
-    resource_group_name = "${azurerm_resource_group.myterraformgroup.name}"
+    resource_group_name = "${azurerm_resource_group.revdepcheckgroup.name}"
 
     tags {
         environment = "Terraform Demo"
@@ -40,18 +40,18 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 }
 
 # Create subnet
-resource "azurerm_subnet" "myterraformsubnet" {
+resource "azurerm_subnet" "revdepchecksubnet" {
     name                 = "mySubnet"
-    resource_group_name  = "${azurerm_resource_group.myterraformgroup.name}"
-    virtual_network_name = "${azurerm_virtual_network.myterraformnetwork.name}"
+    resource_group_name  = "${azurerm_resource_group.revdepcheckgroup.name}"
+    virtual_network_name = "${azurerm_virtual_network.revdepchecknetwork.name}"
     address_prefix       = "10.0.1.0/24"
 }
 
 # Create public IPs
-resource "azurerm_public_ip" "myterraformpublicip" {
+resource "azurerm_public_ip" "revdepcheckpublicip" {
     name                         = "myPublicIP"
     location                     = "eastus"
-    resource_group_name          = "${azurerm_resource_group.myterraformgroup.name}"
+    resource_group_name          = "${azurerm_resource_group.revdepcheckgroup.name}"
     allocation_method            = "Dynamic"
 
     tags {
@@ -60,10 +60,10 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 }
 
 # Create Network Security Group and rule
-resource "azurerm_network_security_group" "myterraformnsg" {
+resource "azurerm_network_security_group" "revdepchecknsg" {
     name                = "myNetworkSecurityGroup"
     location            = "eastus"
-    resource_group_name = "${azurerm_resource_group.myterraformgroup.name}"
+    resource_group_name = "${azurerm_resource_group.revdepcheckgroup.name}"
 
     security_rule {
         name                       = "SSH"
@@ -83,17 +83,17 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 }
 
 # Create network interface
-resource "azurerm_network_interface" "myterraformnic" {
+resource "azurerm_network_interface" "revdepchecknic" {
     name                      = "myNIC"
     location                  = "eastus"
-    resource_group_name       = "${azurerm_resource_group.myterraformgroup.name}"
-    network_security_group_id = "${azurerm_network_security_group.myterraformnsg.id}"
+    resource_group_name       = "${azurerm_resource_group.revdepcheckgroup.name}"
+    network_security_group_id = "${azurerm_network_security_group.revdepchecknsg.id}"
 
     ip_configuration {
         name                          = "myNicConfiguration"
-        subnet_id                     = "${azurerm_subnet.myterraformsubnet.id}"
+        subnet_id                     = "${azurerm_subnet.revdepchecksubnet.id}"
         private_ip_address_allocation = "dynamic"
-        public_ip_address_id          = "${azurerm_public_ip.myterraformpublicip.id}"
+        public_ip_address_id          = "${azurerm_public_ip.revdepcheckpublicip.id}"
     }
 
     tags {
@@ -105,7 +105,7 @@ resource "azurerm_network_interface" "myterraformnic" {
 resource "random_id" "randomId" {
     keepers = {
         # Generate a new ID only when a new resource group is defined
-        resource_group = "${azurerm_resource_group.myterraformgroup.name}"
+        resource_group = "${azurerm_resource_group.revdepcheckgroup.name}"
     }
 
     byte_length = 8
@@ -114,7 +114,7 @@ resource "random_id" "randomId" {
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "mystorageaccount" {
     name                        = "diag${random_id.randomId.hex}"
-    resource_group_name         = "${azurerm_resource_group.myterraformgroup.name}"
+    resource_group_name         = "${azurerm_resource_group.revdepcheckgroup.name}"
     location                    = "eastus"
     account_tier                = "Standard"
     account_replication_type    = "LRS"
@@ -125,11 +125,11 @@ resource "azurerm_storage_account" "mystorageaccount" {
 }
 
 # Create virtual machine
-resource "azurerm_virtual_machine" "myterraformvm" {
+resource "azurerm_virtual_machine" "revdepcheckvm" {
     name                  = "myVM"
     location              = "eastus"
-    resource_group_name   = "${azurerm_resource_group.myterraformgroup.name}"
-    network_interface_ids = ["${azurerm_network_interface.myterraformnic.id}"]
+    resource_group_name   = "${azurerm_resource_group.revdepcheckgroup.name}"
+    network_interface_ids = ["${azurerm_network_interface.revdepchecknic.id}"]
     vm_size               = "Standard_DS1_v2"
 
     storage_os_disk {
@@ -170,5 +170,5 @@ resource "azurerm_virtual_machine" "myterraformvm" {
 }
 
 output "ssh" {
-  value = "${formatlist("ssh -o StrictHostKeyChecking=false ubuntu@%s", azurerm_public_ip.myterraformpublicip.*.ip_address)}"
+  value = "${formatlist("ssh -o StrictHostKeyChecking=false ubuntu@%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
 }
