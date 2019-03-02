@@ -15,6 +15,9 @@ variable "ssh_key_data" {}
 variable "adminuser" {
     default = "ubuntu"
 }
+variable "zone" {
+    default = "eastus"
+}
 
 provider "random" {
     version = "~> 2.0"
@@ -23,7 +26,7 @@ provider "random" {
 # Create a resource group if it doesn’t exist
 resource "azurerm_resource_group" "revdepcheckgroup" {
     name     = "myResourceGroup"
-    location = "eastus"
+    location = "${var.zone}"
 
     tags {
         environment = "Terraform Demo"
@@ -34,7 +37,7 @@ resource "azurerm_resource_group" "revdepcheckgroup" {
 resource "azurerm_virtual_network" "revdepchecknetwork" {
     name                = "myVnet"
     address_space       = ["10.0.0.0/16"]
-    location            = "eastus"
+    location            = "${var.zone}"
     resource_group_name = "${azurerm_resource_group.revdepcheckgroup.name}"
 
     tags {
@@ -53,7 +56,7 @@ resource "azurerm_subnet" "revdepchecksubnet" {
 # Create public IPs
 resource "azurerm_public_ip" "revdepcheckpublicip" {
     name                         = "myPublicIP"
-    location                     = "eastus"
+    location                     = "${var.zone}"
     resource_group_name          = "${azurerm_resource_group.revdepcheckgroup.name}"
     allocation_method            = "Dynamic"
 
@@ -65,7 +68,7 @@ resource "azurerm_public_ip" "revdepcheckpublicip" {
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "revdepchecknsg" {
     name                = "myNetworkSecurityGroup"
-    location            = "eastus"
+    location            = "${var.zone}"
     resource_group_name = "${azurerm_resource_group.revdepcheckgroup.name}"
 
     security_rule {
@@ -88,7 +91,7 @@ resource "azurerm_network_security_group" "revdepchecknsg" {
 # Create network interface
 resource "azurerm_network_interface" "revdepchecknic" {
     name                      = "myNIC"
-    location                  = "eastus"
+    location                  = "${var.zone}"
     resource_group_name       = "${azurerm_resource_group.revdepcheckgroup.name}"
     network_security_group_id = "${azurerm_network_security_group.revdepchecknsg.id}"
 
@@ -118,7 +121,7 @@ resource "random_id" "randomId" {
 resource "azurerm_storage_account" "mystorageaccount" {
     name                        = "diag${random_id.randomId.hex}"
     resource_group_name         = "${azurerm_resource_group.revdepcheckgroup.name}"
-    location                    = "eastus"
+    location                    = "${var.zone}"
     account_tier                = "Standard"
     account_replication_type    = "LRS"
 
@@ -130,7 +133,7 @@ resource "azurerm_storage_account" "mystorageaccount" {
 # Create virtual machine
 resource "azurerm_virtual_machine" "revdepcheckvm" {
     name                  = "myVM"
-    location              = "eastus"
+    location              = "${var.zone}"
     resource_group_name   = "${azurerm_resource_group.revdepcheckgroup.name}"
     network_interface_ids = ["${azurerm_network_interface.revdepchecknic.id}"]
     vm_size               = "Standard_DS1_v2"

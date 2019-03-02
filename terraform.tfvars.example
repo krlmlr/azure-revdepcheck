@@ -15,3 +15,6 @@ ssh_key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8xYbelROJXNFhrl87he3RgHzE
 
 # can't be taken from $HOME, see https://github.com/hashicorp/terraform/issues/62
 # adminuser = "kirill"
+
+# zone
+# zone = "eastus"
