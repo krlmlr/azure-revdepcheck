@@ -50,3 +50,6 @@ RUN \
 RUN \
   apt-get install -y \
   cifs-utils unscd libxml2-dev xvfb git-sh lbzip2 libfftw3-dev libgdal-dev libgeos-dev libgsl0-dev libgl1-mesa-dev libglu1-mesa-dev libhdf4-alt-dev libhdf5-dev liblwgeom-dev libproj-dev libprotobuf-dev libnetcdf-dev libsqlite3-dev libudunits2-dev netcdf-bin protobuf-compiler tk-dev unixodbc-dev icedtea-netx libgdal-dev libproj-dev libgeos-dev libgsl-dev librsvg2-dev libxcb1-dev libxdmcp-dev libxslt1-dev libxt-dev mdbtools netcdf-bin libmagick++-dev libsndfile1-dev libv8-dev libsecret-1-dev libzmq3-dev openjdk-8-jdk-headless libgtk2.0-dev libmagic-dev libmpich-dev libgmp-dev librdf0-dev ggobi libpoppler-cpp-dev jags libglpk-dev python-dev libmpfr-dev libapparmor-dev libjq-dev libtesseract-dev libleptonica-dev libprotoc-dev libsodium-dev mpi-default-dev tesseract-ocr-eng librrd-dev cargo coinor-symphony libgit2-dev coinor-libsymphony-dev coinor-libcgl-dev autotools-dev libsbml-dev libopenbabel-dev libgeos++-dev libssh-dev pandoc pandoc-citeproc iotop libssl1.0-dev libsasl2-dev cmake libqt4-dev libquantlib0-dev bwidget mailutils
+
+RUN \
+  echo 'options(repos = "file:///opt/cran")' >> /usr/local/lib/R/etc/Rprofile.site
