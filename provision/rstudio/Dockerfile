@@ -37,3 +37,5 @@ COPY github-pkg.txt /
 RUN nice R -q -e 'remotes::install_github(readLines("/github-pkg.txt"))'
 
 RUN su rstudio -c "git clone https://github.com/r-lib/revdepcheck /home/rstudio/revdepcheck"
+
+RUN rsync -dtlzv --delete cran.r-project.org::CRAN/src/contrib/ /opt/cran/src/contrib/
