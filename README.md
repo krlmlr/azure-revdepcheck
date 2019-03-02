@@ -16,6 +16,6 @@ Setting up a machine for revdepchecks on Azure, based on [a "Getting started" ex
     
     When the provisioning is finished, the `cloud-init` script that installs Docker and starts the containers still may be running.
 
-3. When done, an `ssh` command is printed on the terminal that allows entering the machine.
+3. When done, an `ssh` command is printed on the terminal that allows entering the machine. Ingress HTTP is not allowed, RStudio must be accessed through tunneling.
 
 4. To destroy the machine, run `terraform destroy` in the `tf` directory. To recreate again, run `terraform apply`.
