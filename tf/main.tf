@@ -183,9 +183,9 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
 }
 
 output "ssh" {
-  value = "${formatlist("ssh -o StrictHostKeyChecking=false ${var.adminuser}@%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
+  value = "${formatlist("ssh -L 8080:80 -o StrictHostKeyChecking=false ${var.adminuser}@%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
 }
 
 output "http" {
-  value = "${formatlist("http://%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
+  value = "${formatlist("http://localhost:8080", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
 }
