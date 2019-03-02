@@ -12,6 +12,9 @@ variable "client_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
 variable "ssh_key_data" {}
+variable "size" {
+    default = "Standard_D4s_v3"
+}
 variable "hostname" {
     default = "revdepcheckvm"
 }
@@ -151,7 +154,7 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
     location              = "${var.zone}"
     resource_group_name   = "${azurerm_resource_group.revdepcheckgroup.name}"
     network_interface_ids = ["${azurerm_network_interface.revdepchecknic.id}"]
-    vm_size               = "Standard_DS1_v2"
+    vm_size               = "${var.size}"
 
     storage_os_disk {
         name              = "revdepcheckOsDisk"
