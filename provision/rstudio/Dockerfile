@@ -53,3 +53,7 @@ RUN \
 
 RUN \
   echo 'options(repos = "file:///opt/cran")' >> /usr/local/lib/R/etc/Rprofile.site
+
+RUN su rstudio -c "git clone https://github.com/krlmlr/scriptlets /home/rstudio/scriptlets && cd scriptlets && make"
+
+RUN chsh -s /bin/bash rstudio
