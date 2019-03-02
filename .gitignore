@@ -1,1 +1,4 @@
 .Rproj.user
+.terraform
+*.tfstate*
+terraform.tfvars

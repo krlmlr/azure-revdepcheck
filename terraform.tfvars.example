@@ -1,0 +1,14 @@
+# subscriptionId
+subscription_id = "462624f8-9e21-4d75-87ec-4e39cfe54728"
+
+# appId
+client_id = "ad15a2de-1699-408f-b5f2-90ef12bb51e1"
+
+# password
+client_secret = "e8d457da-97e8-4a54-9fd1-174aefdecb6a"
+
+# tenant
+tenant_id = "b63194f2-7a02-4cf4-99a2-daaeb5ba7947"
+
+# contents of ~/.ssh/id_rsa.pub
+ssh_key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8xYbelROJXNFhrl87he3RgHzEmSquw6C10i3f4I2ktu024vmM2Hl6VdfRl2/NaJInlmWLpDZ9scyL+94tRt5Q+e0K/kmnw6bql3xZiKN9OCeAUCZaBsAfJniqzwMj+0+pGQI4vtUEfXv/o7CfnaMI4QSe9Jqx4zXdouTwvY6kwWB4K7RFpxpomFJVAO/lt6tfd9ORWavxVuE7bRB0/bln+lHWmzr72OggVKcHbUIwhM6JWFv8S5GwwfBK3TvsDTvCwKryzEG08xtluPL/CjxAPVMXSZsQV+gNXABJQxVKYZmQ6gP88obVLFjYLHz1CyQg0D41MgXiR/Y8USKd+xcJ kirill@tp"

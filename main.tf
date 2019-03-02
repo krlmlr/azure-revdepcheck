@@ -1,9 +1,20 @@
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-    subscription_id = "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    client_id       = "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    client_secret   = "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    tenant_id       = "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    version = "~> 1.22"
+    subscription_id = "${var.subscription_id}"
+    client_id       = "${var.client_id}"
+    client_secret   = "${var.client_secret}"
+    tenant_id       = "${var.tenant_id}"
+}
+
+variable "subscription_id" {}
+variable "client_id" {}
+variable "client_secret" {}
+variable "tenant_id" {}
+variable "ssh_key_data" {}
+
+provider "random" {
+    version = "~> 2.0"
 }
 
 # Create a resource group if it doesn’t exist
@@ -41,7 +52,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = "myPublicIP"
     location                     = "eastus"
     resource_group_name          = "${azurerm_resource_group.myterraformgroup.name}"
-    allocation_method            = "dynamic"
+    allocation_method            = "Dynamic"
 
     tags {
         environment = "Terraform Demo"
@@ -144,7 +155,7 @@ resource "azurerm_virtual_machine" "myterraformvm" {
         disable_password_authentication = true
         ssh_keys {
             path     = "/home/azureuser/.ssh/authorized_keys"
-            key_data = "ssh-rsa AAAAB3Nz{snip}hwhqT9h"
+            key_data = "${var.ssh_key_data}"
         }
     }
 
@@ -156,4 +167,8 @@ resource "azurerm_virtual_machine" "myterraformvm" {
     tags {
         environment = "Terraform Demo"
     }
+}
+
+output "ssh" {
+  value = "${formatlist("ssh -o StrictHostKeyChecking=false ubuntu@%s", azurerm_public_ip.myterraformpublicip.*.ip_address)}"
 }
