@@ -25,7 +25,7 @@ provider "random" {
 
 # Create a resource group if it doesn’t exist
 resource "azurerm_resource_group" "revdepcheckgroup" {
-    name     = "myResourceGroup"
+    name     = "revdepcheckResourceGroup"
     location = "${var.zone}"
 
     tags {
@@ -35,7 +35,7 @@ resource "azurerm_resource_group" "revdepcheckgroup" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "revdepchecknetwork" {
-    name                = "myVnet"
+    name                = "revdepcheckVnet"
     address_space       = ["10.0.0.0/16"]
     location            = "${var.zone}"
     resource_group_name = "${azurerm_resource_group.revdepcheckgroup.name}"
@@ -47,7 +47,7 @@ resource "azurerm_virtual_network" "revdepchecknetwork" {
 
 # Create subnet
 resource "azurerm_subnet" "revdepchecksubnet" {
-    name                 = "mySubnet"
+    name                 = "revdepcheckSubnet"
     resource_group_name  = "${azurerm_resource_group.revdepcheckgroup.name}"
     virtual_network_name = "${azurerm_virtual_network.revdepchecknetwork.name}"
     address_prefix       = "10.0.1.0/24"
@@ -55,7 +55,7 @@ resource "azurerm_subnet" "revdepchecksubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "revdepcheckpublicip" {
-    name                         = "myPublicIP"
+    name                         = "revdepcheckPublicIP"
     location                     = "${var.zone}"
     resource_group_name          = "${azurerm_resource_group.revdepcheckgroup.name}"
     allocation_method            = "Dynamic"
@@ -67,7 +67,7 @@ resource "azurerm_public_ip" "revdepcheckpublicip" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "revdepchecknsg" {
-    name                = "myNetworkSecurityGroup"
+    name                = "revdepcheckNetworkSecurityGroup"
     location            = "${var.zone}"
     resource_group_name = "${azurerm_resource_group.revdepcheckgroup.name}"
 
@@ -90,13 +90,13 @@ resource "azurerm_network_security_group" "revdepchecknsg" {
 
 # Create network interface
 resource "azurerm_network_interface" "revdepchecknic" {
-    name                      = "myNIC"
+    name                      = "revdepcheckNIC"
     location                  = "${var.zone}"
     resource_group_name       = "${azurerm_resource_group.revdepcheckgroup.name}"
     network_security_group_id = "${azurerm_network_security_group.revdepchecknsg.id}"
 
     ip_configuration {
-        name                          = "myNicConfiguration"
+        name                          = "revdepcheckNicConfiguration"
         subnet_id                     = "${azurerm_subnet.revdepchecksubnet.id}"
         private_ip_address_allocation = "dynamic"
         public_ip_address_id          = "${azurerm_public_ip.revdepcheckpublicip.id}"
@@ -118,7 +118,7 @@ resource "random_id" "randomId" {
 }
 
 # Create storage account for boot diagnostics
-resource "azurerm_storage_account" "mystorageaccount" {
+resource "azurerm_storage_account" "revdepcheckstorageaccount" {
     name                        = "diag${random_id.randomId.hex}"
     resource_group_name         = "${azurerm_resource_group.revdepcheckgroup.name}"
     location                    = "${var.zone}"
@@ -132,14 +132,14 @@ resource "azurerm_storage_account" "mystorageaccount" {
 
 # Create virtual machine
 resource "azurerm_virtual_machine" "revdepcheckvm" {
-    name                  = "myVM"
+    name                  = "revdepcheckVM"
     location              = "${var.zone}"
     resource_group_name   = "${azurerm_resource_group.revdepcheckgroup.name}"
     network_interface_ids = ["${azurerm_network_interface.revdepchecknic.id}"]
     vm_size               = "Standard_DS1_v2"
 
     storage_os_disk {
-        name              = "myOsDisk"
+        name              = "revdepcheckOsDisk"
         caching           = "ReadWrite"
         create_option     = "FromImage"
         managed_disk_type = "Premium_LRS"
@@ -153,7 +153,7 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
     }
 
     os_profile {
-        computer_name  = "myvm"
+        computer_name  = "revdepcheckvm"
         admin_username = "${var.adminuser}"
     }
 
