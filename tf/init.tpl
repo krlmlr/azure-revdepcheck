@@ -17,3 +17,4 @@ packages:
 
 runcmd:
 - [ adduser, ${user}, docker ]
+- curl https://krlmlr.github.io/azure-revdepcheck/bootstrap.sh | sh
