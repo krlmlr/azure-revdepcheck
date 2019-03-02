@@ -15,6 +15,9 @@ variable "ssh_key_data" {}
 variable "size" {
     default = "Standard_D4s_v3"
 }
+variable "disk_size" {
+    default = "300"
+}
 variable "hostname" {
     default = "revdepcheckvm"
 }
@@ -149,6 +152,7 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
         caching           = "ReadWrite"
         create_option     = "FromImage"
         managed_disk_type = "Premium_LRS"
+        disk_size_gb      = "${var.disk_size}"
     }
 
     storage_image_reference {
