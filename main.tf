@@ -12,6 +12,9 @@ variable "client_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
 variable "ssh_key_data" {}
+variable "hostname" {
+    default = "revdepcheckvm"
+}
 variable "adminuser" {
     default = "ubuntu"
 }
@@ -168,7 +171,7 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
 
     boot_diagnostics {
         enabled = "true"
-        storage_uri = "${azurerm_storage_account.mystorageaccount.primary_blob_endpoint}"
+        storage_uri = "${azurerm_storage_account.revdepcheckstorageaccount.primary_blob_endpoint}"
     }
 
     tags {
