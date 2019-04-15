@@ -11,6 +11,10 @@ provider "template" {
   version = "~> 2.1"
 }
 
+provider "http" {
+  version = "~> 1.0"
+}
+
 variable "subscription_id" {}
 variable "client_id" {}
 variable "client_secret" {}
@@ -79,6 +83,10 @@ resource "azurerm_public_ip" "revdepcheckpublicip" {
 }
 
 # Create Network Security Group and rule
+data "http" "myip" {
+  url = "https://ipv4.icanhazip.com"
+}
+
 resource "azurerm_network_security_group" "revdepchecknsg" {
     name                = "revdepcheckNetworkSecurityGroup"
     location            = "${var.zone}"
@@ -92,7 +100,7 @@ resource "azurerm_network_security_group" "revdepchecknsg" {
         protocol                   = "Tcp"
         source_port_range          = "*"
         destination_port_range     = "22"
-        source_address_prefix      = "*"
+        source_address_prefix      = "${chomp(data.http.myip.body)}/32"
         destination_address_prefix = "*"
     }
 
