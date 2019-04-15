@@ -7,6 +7,10 @@ provider "azurerm" {
     tenant_id       = "${var.tenant_id}"
 }
 
+provider "template" {
+  version = "~> 2.1"
+}
+
 variable "subscription_id" {}
 variable "client_id" {}
 variable "client_secret" {}
