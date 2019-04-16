@@ -1,10 +1,6 @@
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
     version = "~> 1.22"
-    subscription_id = "${var.subscription_id}"
-    client_id       = "${var.client_id}"
-    client_secret   = "${var.client_secret}"
-    tenant_id       = "${var.tenant_id}"
 }
 
 provider "template" {
@@ -15,10 +11,6 @@ provider "http" {
   version = "~> 1.0"
 }
 
-variable "subscription_id" {}
-variable "client_id" {}
-variable "client_secret" {}
-variable "tenant_id" {}
 variable "ssh_key_data" {}
 variable "size" {
     default = "Standard_D4s_v3"
