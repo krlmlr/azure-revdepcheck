@@ -42,9 +42,3 @@ RUN su rstudio -c "cd && pwd && git clone https://github.com/r-lib/revdepcheck &
 
 ## File database
 RUN updatedb
-
-## Grab a copy of current CRAN
-RUN mkdir -p /opt/cran/src/contrib/ && rsync -dtlzv --delete cran.r-project.org::CRAN/src/contrib/ /opt/cran/src/contrib/
-
-RUN \
-  echo 'options(repos = "file:///opt/cran")' >> /usr/local/lib/R/etc/Rprofile.site
