@@ -190,6 +190,10 @@ resource "azurerm_virtual_machine" "revdepcheckvm" {
     }
 }
 
+output "cloud_init" {
+  value = "${formatlist("ssh -o StrictHostKeyChecking=false ${var.adminuser}@%s cloud-init status --wait", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
+}
+
 output "ssh" {
   value = "${formatlist("ssh -L 8080:localhost:80 -o StrictHostKeyChecking=false ${var.adminuser}@%s", azurerm_public_ip.revdepcheckpublicip.*.ip_address)}"
 }
