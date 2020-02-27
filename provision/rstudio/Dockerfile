@@ -25,14 +25,14 @@ RUN R CMD javareconf
 ## setup R from within-R
 COPY cran-pkg.txt /
 
-RUN nice R -q -e 'pkg <- readLines("/cran-pkg.txt"); missing <- setdiff(pkg, rownames(installed.packages())); install.packages(missing, repos="https://cran.r-project.org", Ncpus = parallel::detectCores())'
+RUN nice R -q -e 'cores <- parallel::detectCores(); Sys.setenv(MAKEFLAGS = paste0("-j ", cores)); pkg <- readLines("/cran-pkg.txt"); missing <- setdiff(pkg, rownames(installed.packages())); install.packages(missing, repos="https://cran.r-project.org", Ncpus = cores)'
 
-RUN nice R -q -e 'pkg <- readLines("/cran-pkg.txt"); missing <- setdiff(pkg, rownames(installed.packages())); print(missing); stopifnot(length(missing) == 0)'
+RUN nice R -q -e 'cores <- parallel::detectCores(); Sys.setenv(MAKEFLAGS = paste0("-j ", cores)); pkg <- readLines("/cran-pkg.txt"); missing <- setdiff(pkg, rownames(installed.packages())); print(missing); stopifnot(length(missing) == 0)'
 
 ## Install packages from GitHub
 COPY github-pkg.txt /
 
-RUN nice R -q -e 'remotes::install_github(readLines("/github-pkg.txt"))'
+RUN nice R -q -e 'cores <- parallel::detectCores(); Sys.setenv(MAKEFLAGS = paste0("-j ", cores)); remotes::install_github(readLines("/github-pkg.txt"))'
 
 ## TeXlive package
 RUN \
