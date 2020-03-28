@@ -22,18 +22,6 @@ RUN apt-get install -y \
 ## setup R from within-R
 RUN R CMD javareconf
 
-## setup R from within-R
-COPY cran-pkg.txt /
-
-RUN nice R -q -e 'cores <- parallel::detectCores(); Sys.setenv(MAKEFLAGS = paste0("-j ", cores)); pkg <- readLines("/cran-pkg.txt"); missing <- setdiff(pkg, rownames(installed.packages())); install.packages(missing, repos="https://cran.r-project.org", Ncpus = cores)'
-
-RUN nice R -q -e 'cores <- parallel::detectCores(); Sys.setenv(MAKEFLAGS = paste0("-j ", cores)); pkg <- readLines("/cran-pkg.txt"); missing <- setdiff(pkg, rownames(installed.packages())); print(missing); stopifnot(length(missing) == 0)'
-
-## Install packages from GitHub
-COPY github-pkg.txt /
-
-RUN nice R -q -e 'cores <- parallel::detectCores(); Sys.setenv(MAKEFLAGS = paste0("-j ", cores)); remotes::install_github(readLines("/github-pkg.txt"))'
-
 ## TeXlive package
 RUN \
   tlmgr update --self && \
@@ -42,6 +30,11 @@ RUN \
 
 ## Clone revdepchecks and scriptlets
 RUN su rstudio -c "cd && pwd && git clone https://github.com/r-lib/revdepcheck && git clone https://github.com/krlmlr/scriptlets && cd scriptlets && make"
+
+## setup R from within-R
+COPY cran-pkg.txt github-pkg.txt install-r.sh /
+
+RUN nice su rstudio -c "bash /install-r.sh"
 
 ## File database
 RUN updatedb
